@@ -1,0 +1,24 @@
+system:
+  deploy_name: PyconES2019
+  logging:
+    profile: DEVELOP
+    file: false
+    stdout: true
+  resources:
+    status:
+      restart_policy:
+          resources:
+              restart_microservice_on_failure: ['all']
+              restart_resource_on_failure: []
+    amqp:
+      host: rabbitmq
+      port: 5672
+      vhost: /
+      user: rabbit_user_PyconES2019
+      password: rabbit_password_PyconES2019
+      connection_timeout: 10
+      queues_prefix: ""
+    string_api_http_server:
+      host": "0.0.0.0"
+      port: 8080
+      debug": True
