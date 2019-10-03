@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+  etcd:
+    image: "artifacts.s73cloud.com/etcd:component_master"
+    environment:
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_CHECK_KEY: "/etcd_ready"
+      ETCD_API_VERSION: "2"
+    volumes:
+      - ./settings.yml:/opt/custom_settings/settings.yml
+    restart: always
+
+  rabbitmq:
+    image: "rabbitmq:3.7"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit_user_PyconES2019
+      RABBITMQ_DEFAULT_PASS: rabbit_password_PyconES2019
+
+  string_api:
+    image: "string_api"
+    ports:
+      - 8080:8080
+    environment:
+      TAMARCO_ETCD_HOST: etcd
+      TAMARCO_ETCD_PORT: 2379
+
+  upper_operator:
+    image: "upper_operator"
+    environment:
+      TAMARCO_ETCD_HOST: etcd
+      TAMARCO_ETCD_PORT: 2379
