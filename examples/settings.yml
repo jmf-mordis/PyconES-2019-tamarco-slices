@@ -1,0 +1,20 @@
+system:
+  deploy_name: PyconES2019
+  logging:
+    profile: DEVELOP
+    file_path: false
+    stdout: true
+  microservices:
+    my_admin:
+      default_user: tamarco
+      default_password: my_password
+      session_expiration_days: 3
+  resources:
+    amqp:
+      host: 127.0.0.1
+      port: 5672
+      vhost: /
+      user: microservice
+      password: 1234
+      connection_timeout: 10
+      queues_prefix: "prefix"

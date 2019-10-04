@@ -1,4 +1,4 @@
-version: '3.6'
+version: '2.4'
 
 services:
   etcd:
@@ -10,24 +10,40 @@ services:
       ETCD_API_VERSION: "2"
     volumes:
       - ./settings.yml:/opt/custom_settings/settings.yml
-    restart: always
 
   rabbitmq:
     image: "rabbitmq:3.7"
     environment:
       RABBITMQ_DEFAULT_USER: rabbit_user_PyconES2019
       RABBITMQ_DEFAULT_PASS: rabbit_password_PyconES2019
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   string_api:
-    image: "string_api"
+    build:
+      context: StringApi/
     ports:
       - 8080:8080
+    depends_on:
+      - etcd
+      - rabbitmq
     environment:
       TAMARCO_ETCD_HOST: etcd
       TAMARCO_ETCD_PORT: 2379
+      ETCD_CHECK_KEY: etcd_ready
+    restart: always
 
-  upper_operator:
-    image: "upper_operator"
+  string_operator:
+    build:
+      context: StringOperator/
+    depends_on:
+      - etcd
+      - rabbitmq
     environment:
       TAMARCO_ETCD_HOST: etcd
       TAMARCO_ETCD_PORT: 2379
+      ETCD_CHECK_KEY: etcd_ready
+    restart: always
