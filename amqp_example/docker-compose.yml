@@ -1,16 +1,6 @@
 version: '2.4'
 
 services:
-  etcd:
-    image: "etcd:write_yml"
-    environment:
-      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
-      ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
-      ETCD_CHECK_KEY: "/etcd_ready"
-      ETCD_API_VERSION: "2"
-    volumes:
-      - ./settings.yml:/opt/custom_settings/settings.yml
-
   rabbitmq:
     image: "rabbitmq:3.7"
     environment:
@@ -28,22 +18,20 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - etcd
       - rabbitmq
     environment:
-      TAMARCO_ETCD_HOST: etcd
-      TAMARCO_ETCD_PORT: 2379
-      ETCD_CHECK_KEY: etcd_ready
+      TAMARCO_YML_FILE: /opt/settings.yml
+    volumes:
+      - ./settings.yml:/opt/settings.yml
     restart: always
 
   string_operator:
     build:
       context: StringOperator/
     depends_on:
-      - etcd
       - rabbitmq
     environment:
-      TAMARCO_ETCD_HOST: etcd
-      TAMARCO_ETCD_PORT: 2379
-      ETCD_CHECK_KEY: etcd_ready
+      TAMARCO_YML_FILE: /opt/settings.yml
+    volumes:
+      - ./settings.yml:/opt/settings.yml
     restart: always
