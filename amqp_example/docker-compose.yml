@@ -2,7 +2,7 @@ version: '2.4'
 
 services:
   etcd:
-    image: "artifacts.s73cloud.com/etcd:component_master"
+    image: "etcd:write_yml"
     environment:
       ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
       ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379

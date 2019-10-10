@@ -5,11 +5,6 @@ system:
     file: false
     stdout: true
   resources:
-    status:
-      restart_policy:
-          resources:
-              restart_microservice_on_failure: ['all']
-              restart_resource_on_failure: []
     amqp:
       host: rabbitmq
       port: 5672

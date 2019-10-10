@@ -1,2 +1,3 @@
 # PyconES-2019-tamarco-slices
-Slices and code examples of PyconES 2019 Tamarco presentation
+
+Slices and examples of PyconES 2019 Tamarco presentation

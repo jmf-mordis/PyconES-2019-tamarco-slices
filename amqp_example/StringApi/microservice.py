@@ -16,14 +16,14 @@ class StringApi(Microservice):
     )
     string_api_http_server = HTTPServerResource()
 
-    async def upper_endpoint(self, request):
+    async def upper_handler(self, request):
         self.logger.info(f"Received request in upper endpoint: {request.body}")
         upper_operator_output = microservice.amqp.outputs.get('upper_operator')
         response = await upper_operator_output.request(request.body)
         self.logger.info(f"Sending response in upper endpoint {response}")
         return text(response)
 
-    async def lower_endpoint(self, request):
+    async def lower_handler(self, request):
         self.logger.info(f"Received request in lower endpoint: {request.body}")
         lower_operator_output = microservice.amqp.outputs.get('lower_operator')
         response = await lower_operator_output.request(request.body)
